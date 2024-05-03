@@ -56,9 +56,9 @@ const StyledButton = styled.button`
   }
 `;
 
-const PrimaryButton = ({ text, width, height , mode}) => {
+const PrimaryButton = ({ text, width, height , mode, onClick }) => {
   return (
-    <StyledButton className="custom-btn primary-button" width={width} height={height} mode={mode} >{text}</StyledButton>
+    <StyledButton className="custom-btn primary-button" width={width} height={height} mode={mode} onClick={onClick}>{text}</StyledButton>
   );
 };
 

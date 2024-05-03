@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 
 import Input from '../Components/Input';
@@ -28,19 +28,38 @@ const MainContainer = styled.div`
 const InputContainer = styled.div`
     display:flex;
     justify-content:center;
-    margin-top:5rem;
+    margin-top: ${(props) => (props.isAsked ? 'auto' : '5rem')};
+    position:relative;
+
+    bottom: ${(props) => (props.isAsked ? '3rem' :  'auto' )};
+
+    transition:  bottom 25s; 
+    @media only screen and (max-width: 820px) {
+
+      position: relative; /* Asegura que el posicionamiento relativo se herede correctamente */
+
+  }
 `
 
 
 const ChatbotApp = () => {
+  const [answer, setAnswer]  = useState('');
+
+  const [sharedStatus, setSharedStatus] = useState(false);
+
+  useEffect(() => {
+    console.log('El estado ha cambiado desde el padre:', sharedStatus);
+  }, [sharedStatus]);
+
+
   return (
     <MainContainer>
         <span>
             <h1>Preguntame lo que quieras</h1> <br />
             <p>Sobre la Ley EAT🤔</p>
         </span>
-        <InputContainer>
-            <Input />
+        <InputContainer isAsked={sharedStatus}  >
+            <Input  sharedStatus={sharedStatus} changeSharedStatus={setSharedStatus}  />
         </InputContainer>
         
     </MainContainer>
