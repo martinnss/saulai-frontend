@@ -42,20 +42,30 @@ const Input = ({ sharedStatus,changeSharedStatus}) => {
 
   const handleButtonClick = () => {
     console.log("El botón ha sido clicado desde el hijo");
+    if (sharedStatus){
+      window.location.reload();
+    }
     changeSharedStatus(!sharedStatus);
+
     // API CALL TO OPENAI, ADEMAS SI SE HACE UN CLICK QUE SE BLOQUEE EL ELEMENTO
   };
 
 
   return (
-    <InputWrapper >
-        <StyledTextarea
-          placeholder="¿Qué dudas tienes?"
-          value={inputValue}
-          onChange={handleInputChange}
-        />
-        <PrimaryButton text="Pruébalo" onClick={handleButtonClick} />
+    sharedStatus ? (
+      <InputWrapper>
+        <PrimaryButton text="Otra pregunta" onClick={handleButtonClick} />
+      </InputWrapper>
+    ) : (
+      <InputWrapper>
+      <StyledTextarea
+        placeholder="¿Qué dudas tienes?"
+        value={inputValue}
+        onChange={handleInputChange}
+      />
+      <PrimaryButton text="Ask Me" onClick={handleButtonClick} />
     </InputWrapper>
+    )
   );
 };
 

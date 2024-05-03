@@ -9,19 +9,24 @@ const MainContainer = styled.div`
   height: 100vh; 
   flex-direction: column; 
   text-align: center;
+  transition: all 0.5s ease;
 
   & > span {
-    margin-top:10%
+    margin-top: ${(props) => (props.isAsked ? '3%' : '10%')};
+    transition: all 0.5s ease;
   }
 
   & > span > h1 {
-    font-size: 3.3rem;
+
+    font-size: ${(props) => (props.isAsked ? '2.5rem' : '3.3rem')};
     background: linear-gradient(315deg, #8a50e1 40%, var(--blue) 80%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    transition: all 0.5s ease;
   }
   & > span > p {
     font-size: 1.5rem;
+    transition: all 0.5s ease;
   }
 `;
 
@@ -53,10 +58,10 @@ const ChatbotApp = () => {
 
 
   return (
-    <MainContainer>
-        <span>
-            <h1>Preguntame lo que quieras</h1> <br />
-            <p>Sobre la Ley EAT🤔</p>
+    <MainContainer isAsked={sharedStatus}>
+        <span >
+            <h1>{sharedStatus? "Saul AI":"Pregúntame lo que quieras"}</h1> <br />
+            <p>{sharedStatus? "":"Sobre la Ley EAT🤔"}</p>
         </span>
         <InputContainer isAsked={sharedStatus}  >
             <Input  sharedStatus={sharedStatus} changeSharedStatus={setSharedStatus}  />
