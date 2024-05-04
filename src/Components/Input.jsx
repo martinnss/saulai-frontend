@@ -11,7 +11,7 @@ const InputWrapper = styled.div`
   background-color: #f4f4f433;
   padding: 10px;
   width: 50rem;
-  border: 1px solid #b1b1b195;
+  border: ${(props) => (props.isAsked ?   '1px solid #b1b1b10' : '1px solid #b1b1b195'  )};
   transition: height 0.3s ease; 
   
   
@@ -55,7 +55,7 @@ const Input = ({ sharedStatus,changeSharedStatus}) => {
 
   return (
     sharedStatus ? (
-      <InputWrapper>
+      <InputWrapper isAsked = {sharedStatus}>
         <PrimaryButton text="Otra pregunta" onClick={handleButtonClick} />
       </InputWrapper>
     ) : (

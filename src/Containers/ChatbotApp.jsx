@@ -1,7 +1,22 @@
 import React, {useState, useEffect} from 'react'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 
 import Input from '../Components/Input';
+
+
+
+const appearAnimation = keyframes`
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+
 
 const MainContainer = styled.div`
   display: flex;
@@ -49,12 +64,23 @@ const InputContainer = styled.div`
 `
 
 const ChatBubble = styled.div`
-  background-color: #f0f0ff;
+  background-color: #f0f0ff5a;
+  backdrop-filter: blur(10px);
   border-radius: 8px;
-  border: 1px solid lightgray;
+  border: 1px solid  #b0b0b036;
   width: 50rem;
   height: 30vh;
   margin-bottom: 10px;
+
+  padding: 1rem;
+
+  & > h1 {
+    font-size: 1.3rem;
+    background: linear-gradient(315deg, #66008e 40%, #000276 80%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: ${appearAnimation} 5s forwards;
+  }
 `;
 
 const ChatBubbleContainer = styled.div`
@@ -66,7 +92,7 @@ const ChatBubbleContainer = styled.div`
   justify-content: center;
   width: 100%;
 
-  margin-top: 15rem;
+  margin-top: 10rem;
   
   @media only screen and (max-width: 820px) {
     width: 80%;
@@ -91,10 +117,10 @@ const ChatbotApp = () => {
         </span>
         {
               sharedStatus ? (
-                <ChatBubbleContainer >
-                  <ChatBubble>
-                    <h1>{"que pasa"}</h1>
-                  </ChatBubble>
+              <ChatBubbleContainer >
+                <ChatBubble>
+                  <h1>{"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique tincidunt ante a blandit. Praesent vehicula justo magna, eu feugiat sem consectetur id. Aliquam vehicula consectetur sapien. Etiam in libero eros. Suspendisse non facilisis libero. Donec suscipit blandit nisl eu ultrices. Etiam id turpis velit. Sed placerat dui tincidunt, placerat dui placerat, ornare sapien. Donec tempor, elit ut dictum congue, mauris leo lobortis odio, vel lacinia odio lacus non justo. Proin tellus ex, gravida ac est vitae, lacinia consequat velit."}</h1>
+                </ChatBubble>
               </ChatBubbleContainer>
               ) : (
                 <p></p>
