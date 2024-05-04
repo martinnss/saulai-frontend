@@ -12,7 +12,9 @@ const InputWrapper = styled.div`
   padding: 10px;
   width: 50rem;
   border: 1px solid #b1b1b195;
-  transition: height 0.3s ease; /* Transición para el cambio de ancho */
+  transition: height 0.3s ease; 
+  
+  
 
   @media only screen and (max-width: 820px) {
     width: 80%;

@@ -10,6 +10,8 @@ const MainContainer = styled.div`
   flex-direction: column; 
   text-align: center;
   transition: all 0.5s ease;
+  align-items: center;
+  justify-content: center;
 
   & > span {
     margin-top: ${(props) => (props.isAsked ? '3%' : '10%')};
@@ -46,6 +48,30 @@ const InputContainer = styled.div`
   }
 `
 
+const ChatBubble = styled.div`
+  background-color: #f0f0ff;
+  border-radius: 8px;
+  border: 1px solid lightgray;
+  width: 50rem;
+  height: 30vh;
+  margin-bottom: 10px;
+`;
+
+const ChatBubbleContainer = styled.div`
+  display:flex;
+  justify-content:center;
+
+  width:50rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  margin-top: 15rem;
+  
+  @media only screen and (max-width: 820px) {
+    width: 80%;
+  }
+`;
 
 const ChatbotApp = () => {
   const [answer, setAnswer]  = useState('');
@@ -63,6 +89,17 @@ const ChatbotApp = () => {
             <h1>{sharedStatus? "Saul AI":"Pregúntame lo que quieras"}</h1> <br />
             <p>{sharedStatus? "":"Sobre la Ley EAT🤔"}</p>
         </span>
+        {
+              sharedStatus ? (
+                <ChatBubbleContainer >
+                  <ChatBubble>
+                    <h1>{"que pasa"}</h1>
+                  </ChatBubble>
+              </ChatBubbleContainer>
+              ) : (
+                <p></p>
+              )
+        }
         <InputContainer isAsked={sharedStatus}  >
             <Input  sharedStatus={sharedStatus} changeSharedStatus={setSharedStatus}  />
         </InputContainer>
