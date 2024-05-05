@@ -44,10 +44,18 @@ const Input = ({ sharedStatus,changeSharedStatus}) => {
 
   const handleButtonClick = () => {
     console.log("El botón ha sido clicado desde el hijo");
-    if (sharedStatus){
-      window.location.reload();
+
+    if (!inputValue){
+      alert("Introduce alguna duda o consulta")
+
+    } else {
+
+      if (sharedStatus){
+        window.location.reload();
+      }
+      
+      changeSharedStatus(!sharedStatus);
     }
-    changeSharedStatus(!sharedStatus);
 
     // API CALL TO OPENAI, ADEMAS SI SE HACE UN CLICK QUE SE BLOQUEE EL ELEMENTO
   };
