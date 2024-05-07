@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import styled from 'styled-components';
 import PrimaryButton from './PrimaryButton';
 
@@ -33,22 +33,27 @@ const StyledTextarea = styled.textarea`
 `;
 
 const Input = ({ sharedStatus,changeSharedStatus}) => {
-  const [inputValue, setInputValue] = useState('');
   const [withText, setWithText] = useState(false)
 
+  const [userPrompt, setUserPrompt] = useState('');
+  const [saulaiOutput, setSaulaiOutput] = useState('');
+  const [finalOutput, setFinalOutput] = useState('');
+
   const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+    setUserPrompt(e.target.value);
   };
 
 
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     console.log("El botón ha sido clicado desde el hijo");
 
-    if (!inputValue){
+    if (!userPrompt){
       alert("Introduce alguna duda o consulta")
 
     } else {
+      
+      setFinalOutput(userPrompt)
 
       if (sharedStatus){
         window.location.reload();
@@ -57,20 +62,49 @@ const Input = ({ sharedStatus,changeSharedStatus}) => {
       changeSharedStatus(!sharedStatus);
     }
 
-    // API CALL TO OPENAI, ADEMAS SI SE HACE UN CLICK QUE SE BLOQUEE EL ELEMENTO
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/ask_saulai', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user_prompt: finalOutput }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Exisoto")
+          console.log(data)
+          setSaulaiOutput(data.saulai_output);
+        } else {
+          console.error('Error al obtener la respuesta de la API');
+        }
+      } catch (error) {
+        console.error('Error de red:', error);
+      }
+    };
+
+    // Verifica si hay un prompt de usuario antes de hacer la llamada a la API
+    if (finalOutput) {
+      fetchData();
+    }
+  }, [finalOutput]);
 
   return (
     sharedStatus ? (
       <InputWrapper isAsked = {sharedStatus}>
         <PrimaryButton text="Otra pregunta" onClick={handleButtonClick} />
+        <h1>{saulaiOutput}</h1>
       </InputWrapper>
     ) : (
       <InputWrapper>
       <StyledTextarea
         placeholder="¿Qué dudas tienes?"
-        value={inputValue}
+        value={userPrompt}
         onChange={handleInputChange}
       />
       <PrimaryButton text="Ask Me" onClick={handleButtonClick} />
