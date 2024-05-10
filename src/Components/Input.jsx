@@ -32,11 +32,10 @@ const StyledTextarea = styled.textarea`
   padding-top: 15px;
 `;
 
-const Input = ({ sharedStatus,changeSharedStatus}) => {
+const Input = ({ sharedStatus,changeSharedStatus, setAnswer}) => {
   const [withText, setWithText] = useState(false)
 
   const [userPrompt, setUserPrompt] = useState('');
-  const [saulaiOutput, setSaulaiOutput] = useState('');
   const [finalOutput, setFinalOutput] = useState('');
 
   const handleInputChange = (e) => {
@@ -67,7 +66,9 @@ const Input = ({ sharedStatus,changeSharedStatus}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/ask_saulai', {
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        
+        const response = await fetch('https://martinnss.pythonanywhere.com/ask_saulai', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -79,7 +80,7 @@ const Input = ({ sharedStatus,changeSharedStatus}) => {
           const data = await response.json();
           console.log("Exisoto")
           console.log(data)
-          setSaulaiOutput(data.saulai_output);
+          setAnswer(data.saulai_output);
         } else {
           console.error('Error al obtener la respuesta de la API');
         }
@@ -98,7 +99,6 @@ const Input = ({ sharedStatus,changeSharedStatus}) => {
     sharedStatus ? (
       <InputWrapper isAsked = {sharedStatus}>
         <PrimaryButton text="Otra pregunta" onClick={handleButtonClick} />
-        <h1>{saulaiOutput}</h1>
       </InputWrapper>
     ) : (
       <InputWrapper>

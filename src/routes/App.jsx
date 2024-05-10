@@ -13,8 +13,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path='/' element={<Home/>}  />
-        <Route exact path='/saulai' element={<Chatbot />} />     
+        <Route exact path='/' element={<Chatbot/>}  />
       </Routes>
     </BrowserRouter>
   );
