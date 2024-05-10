@@ -29,7 +29,7 @@ const MainContainer = styled.div`
   justify-content: center;
 
   & > span {
-    margin-top: ${(props) => (props.isAsked ? '3%' : '10%')};
+    margin-top: ${(props) => (props.isAsked ? '3%' : '0%')};
     transition: all 0.5s ease;
   }
 
@@ -72,7 +72,7 @@ const ChatBubble = styled.div`
   border-radius: 8px;
   border: 1px solid #b0b0b036;
   width: 50rem;
-  height: 30vh;
+  height: 40vh;
   margin-bottom: 10px;
   padding: 1rem;
 
@@ -82,6 +82,13 @@ const ChatBubble = styled.div`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: ${appearAnimation} 5s forwards;
+  }
+
+  @media only screen and (max-width: 820px) {
+
+    font-size: 1rem;
+    height: 50vh;
+
   }
 `;
 
