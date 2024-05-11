@@ -43,7 +43,6 @@ const Input = ({ sharedStatus,changeSharedStatus, setAnswer}) => {
   };
 
 
-
   const handleButtonClick = async () => {
     console.log("El botón ha sido clicado desde el hijo");
 
@@ -63,6 +62,12 @@ const Input = ({ sharedStatus,changeSharedStatus, setAnswer}) => {
 
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleButtonClick();
+    }
+  };
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -106,6 +111,7 @@ const Input = ({ sharedStatus,changeSharedStatus, setAnswer}) => {
         placeholder="¿Qué dudas tienes?"
         value={userPrompt}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
       />
       <PrimaryButton text="Ask Me" onClick={handleButtonClick} />
     </InputWrapper>
