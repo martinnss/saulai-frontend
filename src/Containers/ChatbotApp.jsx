@@ -50,7 +50,7 @@ const MainContainer = styled.div`
 const InputContainer = styled.div`
     display:flex;
     justify-content:center;
-    margin-top: ${(props) => (props.isAsked ? 'auto' : '5rem')};
+    margin-top: ${(props) => (props.isAsked ? '6rem' : '5rem')};
     position:relative;
 
     bottom: ${(props) => (props.isAsked ? '6rem' :  'auto' )};
