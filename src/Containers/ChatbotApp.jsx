@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled, {keyframes} from 'styled-components'
 
 import Input from '../Components/Input';
@@ -65,8 +65,8 @@ const InputContainer = styled.div`
 
 const ChatBubble = styled.div`
   display: flex;
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center; /* Centra verticalmente */
+  justify-content: center; 
+  align-items: 'center'; 
   background-color: #f0f0ff5a;
   backdrop-filter: blur(10px);
   border-radius: 8px;
@@ -75,8 +75,10 @@ const ChatBubble = styled.div`
   height: 40vh;
   margin-bottom: 10px;
   padding: 1rem;
+  overflow: auto;
 
   & > h1 {
+    margin:0;
     font-size: 1.3rem;
     font-weight: 500;
     
@@ -86,6 +88,17 @@ const ChatBubble = styled.div`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: ${appearAnimation} 5s forwards;
+  }
+  
+  &.overflow {
+    align-items: flex-start;
+    & > h1 {
+      position: static;
+      transform: none;
+    }
+  }
+  &.no-overflow{
+    align-items: center;
   }
 
   @media only screen and (max-width: 820px) {
@@ -106,7 +119,7 @@ const ChatBubbleContainer = styled.div`
   justify-content: center;
   width: 100%;
 
-  margin-top: 6rem;
+  margin-top: 2rem;
   
   @media only screen and (max-width: 820px) {
     width: 80%;
@@ -123,10 +136,32 @@ bottom: 10px;
 
 `
 
+const useOverflow = (ref,answer) => {
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (ref.current) {
+        setIsOverflowing(ref.current.scrollHeight > ref.current.clientHeight);
+      }
+    };
+
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
+    return () => window.removeEventListener('resize', checkOverflow);
+  }, [ref,answer]);
+  
+  return isOverflowing;
+};
+
+
 const ChatbotApp = () => {
   const [answer, setAnswer]  = useState(null);
 
   const [sharedStatus, setSharedStatus] = useState(false);
+
+  const chatBubbleRef = useRef(null);
+  const isOverflowing = useOverflow(chatBubbleRef, answer);
 
   useEffect(() => {
     console.log('El estado ha cambiado desde el padre:', sharedStatus);
@@ -161,31 +196,30 @@ const ChatbotApp = () => {
         </span>
         {
               sharedStatus ? (
-              <ChatBubbleContainer className='chat-bubble-container'>
-                <ChatBubble className='chat-bubble'>
+              <ChatBubbleContainer className='chat-bubble-container'  >
+                <ChatBubble  ref={chatBubbleRef} className={isOverflowing ? 'overflow' : 'no-overflow'}  >
                   <h1>{answer ? answer: (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='50' height='50' style={{ marginBottom: '10px' }}>
-              <defs>
-                <linearGradient id='gradient' x1='0%' y1='0%' x2='100%' y2='100%'>
-                  <stop offset='40%' style={{ stopColor: '#66008e', stopOpacity: 1 }} />
-                  <stop offset='80%' style={{ stopColor: '#000276', stopOpacity: 1 }} />
-                </linearGradient>
-              </defs>
-              <circle transform='rotate(0)' transform-origin='center' fill='none' stroke='url(#gradient)' stroke-width='7' stroke-linecap='round' stroke-dasharray='115 500' stroke-dashoffset='0' cx='50' cy='50' r='35'>
-                <animateTransform 
-                  attributeName='transform'
-                  type='rotate'
-                  from='0'
-                  to='360'
-                  dur='2'
-                  repeatCount='indefinite'>
-                </animateTransform>
-              </circle>
-            </svg>
-            <h1 style={{ margin: '0' }}>{waitingStrings[indice]}</h1>
-          </div>
-
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='50' height='50' style={{ marginBottom: '10px' }}>
+                        <defs>
+                          <linearGradient id='gradient' x1='0%' y1='0%' x2='100%' y2='100%'>
+                            <stop offset='40%' style={{ stopColor: '#66008e', stopOpacity: 1 }} />
+                            <stop offset='80%' style={{ stopColor: '#000276', stopOpacity: 1 }} />
+                          </linearGradient>
+                        </defs>
+                        <circle transform='rotate(0)' transform-origin='center' fill='none' stroke='url(#gradient)' stroke-width='7' stroke-linecap='round' stroke-dasharray='115 500' stroke-dashoffset='0' cx='50' cy='50' r='35'>
+                          <animateTransform 
+                            attributeName='transform'
+                            type='rotate'
+                            from='0'
+                            to='360'
+                            dur='2'
+                            repeatCount='indefinite'>
+                          </animateTransform>
+                        </circle>
+                      </svg>
+                      <h1 style={{ margin: '0' }}>{waitingStrings[indice]}</h1>
+                    </div>
                     ) }
                   </h1>
                 </ChatBubble>
