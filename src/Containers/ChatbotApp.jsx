@@ -122,7 +122,7 @@ const ChatBubbleContainer = styled.div`
   justify-content: center;
   width: 100%;
 
-  margin-top: 2rem;
+  margin-top: 1rem;
   
   @media only screen and (max-width: 820px) {
     width: 80%;
@@ -170,11 +170,13 @@ const ChatbotApp = () => {
   return (
     <MainContainer isAsked={sharedStatus} className='main-container'>
         <span >
-            <h1>{sharedStatus? "Saul AI":"Pregúntame lo que quieras"}</h1> <br />
+            <h1>{sharedStatus? "Saul AI":"Pregúntame lo que quieras"}</h1> 
             <p>
               {
               sharedStatus? 
-                "":
+                (<p style={{ fontSize: '1rem'}} >
+                  Respuestas legales al estilo Goodman💼
+                </p>):
                 (
                   <div>
                     <p>
