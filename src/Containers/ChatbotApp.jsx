@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import styled, {keyframes} from 'styled-components'
+import useOverflow from '../Hooks/useOverflow';
 
 import Input from '../Components/Input';
 
@@ -110,6 +111,8 @@ const ChatBubble = styled.div`
 `;
 
 
+
+
 const ChatBubbleContainer = styled.div`
   display:flex;
   justify-content:center;
@@ -126,6 +129,8 @@ const ChatBubbleContainer = styled.div`
   }
 `;
 
+
+
 const MadeBy = styled.div`
 position:fixed;
 bottom: 10px;
@@ -136,23 +141,6 @@ bottom: 10px;
 
 `
 
-const useOverflow = (ref,answer) => {
-  const [isOverflowing, setIsOverflowing] = useState(false);
-
-  useEffect(() => {
-    const checkOverflow = () => {
-      if (ref.current) {
-        setIsOverflowing(ref.current.scrollHeight > ref.current.clientHeight);
-      }
-    };
-
-    checkOverflow();
-    window.addEventListener('resize', checkOverflow);
-    return () => window.removeEventListener('resize', checkOverflow);
-  }, [ref,answer]);
-  
-  return isOverflowing;
-};
 
 
 const ChatbotApp = () => {
@@ -191,7 +179,19 @@ const ChatbotApp = () => {
     <MainContainer isAsked={sharedStatus} className='main-container'>
         <span >
             <h1>{sharedStatus? "Saul AI":"Pregúntame lo que quieras"}</h1> <br />
-            <p>{sharedStatus? "":"Sobre la Ley EAT🤔"}</p>
+            <p>
+              {
+              sharedStatus? 
+                "":
+                (
+                  <div>
+                    <p>
+                      Sobre la Ley EAT
+                      <img src="https://em-content.zobj.net/source/apple/271/thinking-face_1f914.png" alt="thinking emoji" style={{ height: '1.5rem' , marginTop: '2px' , position: 'fixed'}}  />
+                      </p>
+                  </div>
+                )
+              }</p>
 
         </span>
         {
