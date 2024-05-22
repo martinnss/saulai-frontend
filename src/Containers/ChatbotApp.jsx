@@ -163,15 +163,7 @@ const ChatbotApp = () => {
     "Desbloqueando los misterios de la legislación. ¿Qué aspecto de la ley necesitas entender hoy?",
     "Convierte la complejidad legal en comprensión. Estoy aquí para ayudarte.",
     "Haciendo la ley más accesible. Puedo responder a tus preguntas sobre la Ley EAT",
-    "¡Listo para descifrar la jerga legal! ¿En qué puedo ayudarte hoy?",
-    "¡Prepárate para mi gran update! Pronto podrás hacer preguntas sobre cualquier texto y obtener respuestas instantáneas.",
-    "En breve, podrás aprovechar nuestra nueva función de preguntas y respuestas para cualquier tipo de texto.",
-    "¡Nuevas posibilidades en el horizonte! Estamos trabajando en una función que te permitirá hacer preguntas sobre cualquier texto y obtener respuestas detalladas.",
-    "¡No te pierdas la próxima actualización! Estamos introduciendo una función de preguntas y respuestas que cambiará la forma en que interactúas con los textos.",
-    "¡Grandes noticias en camino! Muy pronto podrás hacer preguntas sobre cualquier texto y obtener respuestas instantáneas.",
-    "¡La espera está por terminar! Estamos a punto de lanzar una emocionante función que te permitirá hacer preguntas sobre cualquier texto y obtener respuestas en tiempo real.",
-    "¡Una revolución en la interpretación de textos! Estamos desarrollando una función que te permitirá hacer preguntas sobre cualquier documento y obtener respuestas precisas al instante.",
-    "¡Prepárate para explorar un nuevo mundo de conocimiento! Muy pronto podrás hacer preguntas sobre cualquier texto y recibir respuestas detalladas directamente desde nuestra plataforma."
+    "¡Listo para descifrar la jerga legal! ¿En qué puedo ayudarte hoy?"
   ];
   
   const indice = Math.floor(Math.random() * waitingStrings.length);
