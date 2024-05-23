@@ -37,7 +37,7 @@ const MainContainer = styled.div`
   & > span > h1 {
 
     font-size: ${(props) => (props.isAsked ? '2.5rem' : '3.3rem')};
-    background: linear-gradient(315deg, #8a50e1 40%, var(--blue) 80%);
+    background: var(--blue);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     transition: all 0.5s ease;
@@ -85,7 +85,7 @@ const ChatBubble = styled.div`
     
     line-height: 1.6; 
 
-    background: linear-gradient(315deg, #7039d6 40%, #793ac7 80%);
+    background: var(--blue);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: ${appearAnimation} 5s forwards;
@@ -105,7 +105,7 @@ const ChatBubble = styled.div`
   @media only screen and (max-width: 820px) {
 
     font-size: 1rem;
-    height: 50vh;
+    height: 46vh;
 
   }
 `;
@@ -197,8 +197,8 @@ const ChatbotApp = () => {
                       <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='50' height='50' style={{ marginBottom: '10px' }}>
                         <defs>
                           <linearGradient id='gradient' x1='0%' y1='0%' x2='100%' y2='100%'>
-                            <stop offset='40%' style={{ stopColor: '#66008e', stopOpacity: 1 }} />
-                            <stop offset='80%' style={{ stopColor: '#000276', stopOpacity: 1 }} />
+                            <stop offset='80%' style={{ stopColor: 'var(--blue)', stopOpacity: 1 }} />
+                            <stop offset='40%' style={{ stopColor: '#000276', stopOpacity: 1 }} />
                           </linearGradient>
                         </defs>
                         <circle transform='rotate(0)' transform-origin='center' fill='none' stroke='url(#gradient)' stroke-width='7' stroke-linecap='round' stroke-dasharray='115 500' stroke-dashoffset='0' cx='50' cy='50' r='35'>
