@@ -115,9 +115,8 @@ const ChatBubble = styled.div`
 
 const ChatBubbleContainer = styled.div`
   display:flex;
-  justify-content:center;
-
   width:50rem;
+  
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -129,7 +128,25 @@ const ChatBubbleContainer = styled.div`
   }
 `;
 
+const UserBubble = styled.div`
+  max-width: 60%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 10px;
+  background-color: #DCF8C6;
+  align-self: flex-end;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+`;
 
+const BotBubble = styled.div`
+  max-width: 60%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 10px;
+  background-color: #FFF;
+  align-self: flex-start;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+`;
 
 const MadeBy = styled.div`
 position:fixed;
@@ -143,36 +160,44 @@ bottom: 10px;
 
 
 
-const ChatbotApp = () => {
+const ChatbotAppV2 = () => {
   const [answer, setAnswer]  = useState(null);
+  const [userMessage, setUserMessage] = useState([])
+  const [botMessage, setBotMessage] = useState([])
 
   const [sharedStatus, setSharedStatus] = useState(false);
 
   const chatBubbleRef = useRef(null);
   const isOverflowing = useOverflow(chatBubbleRef, answer);
 
-  useEffect(() => {
-    console.log('El estado ha cambiado desde el padre:', sharedStatus);
-  }, [sharedStatus]);
+  const allMessages = [];
 
-  const waitingStrings = [
-    "Explorando las complejidades legales: soy tu asistente para entender cualquier aspecto de la ley EAT",
-    "¡La ley a tu alcance! Convierte cualquier duda legal en una respuesta clara.",
-    "Navegando por el laberinto legal. Hazme cualquier pregunta sobre la Ley EAT",
-    "Estoy aquí para brindarte información precisa.",
-    "Desbloqueando los misterios de la legislación. ¿Qué aspecto de la ley necesitas entender hoy?",
-    "Convierte la complejidad legal en comprensión. Estoy aquí para ayudarte.",
-    "Haciendo la ley más accesible. Puedo responder a tus preguntas sobre la Ley EAT",
-    "¡Listo para descifrar la jerga legal! ¿En qué puedo ayudarte hoy?"
-  ];
+  useEffect(() => {
+    const maxLength = Math.max(userMessage.length, botMessage.length);
+
+    for (let i = 0; i < maxLength; i++) {
+      if (i < userMessage.length) {
+        allMessages.push({ text: userMessage[i], isUser: true });
+      }
+      if (i < botMessage.length) {
+        allMessages.push({ text: botMessage[i], isUser: false });
+      }
+    }
   
-  const indice = Math.floor(Math.random() * waitingStrings.length);
+    console.log(userMessage);
+    console.log(botMessage)
+    console.log('......................')
+    console.group(allMessages)
+  }, [botMessage]);
+
+  
   return (
     <MainContainer isAsked={sharedStatus} className='main-container'>
+    
         <span >
             <h1>{sharedStatus? "Saul AI":"Pregúntame lo que quieras"}</h1> 
             <p>
-              {
+              { ////////  //////////// span padre no debe cambiar
               sharedStatus? 
                 (<p style={{ fontSize: '1rem'}} >
                   Respuestas legales al estilo Goodman💼
@@ -192,30 +217,17 @@ const ChatbotApp = () => {
               sharedStatus ? (
               <ChatBubbleContainer className='chat-bubble-container'  >
                 <ChatBubble  ref={chatBubbleRef} className={isOverflowing ? 'overflow' : 'no-overflow'}  >
-                  <h1>{answer ? answer: (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' width='50' height='50' style={{ marginBottom: '10px' }}>
-                        <defs>
-                          <linearGradient id='gradient' x1='0%' y1='0%' x2='100%' y2='100%'>
-                            <stop offset='80%' style={{ stopColor: 'var(--blue)', stopOpacity: 1 }} />
-                            <stop offset='40%' style={{ stopColor: '#000276', stopOpacity: 1 }} />
-                          </linearGradient>
-                        </defs>
-                        <circle transform='rotate(0)' transform-origin='center' fill='none' stroke='url(#gradient)' stroke-width='7' stroke-linecap='round' stroke-dasharray='115 500' stroke-dashoffset='0' cx='50' cy='50' r='35'>
-                          <animateTransform 
-                            attributeName='transform'
-                            type='rotate'
-                            from='0'
-                            to='360'
-                            dur='2'
-                            repeatCount='indefinite'>
-                          </animateTransform>
-                        </circle>
-                      </svg>
-                      <h1 style={{ margin: '0' }}>{waitingStrings[indice]}</h1>
-                    </div>
-                    ) }
-                  </h1>
+                {allMessages.map((message, index) => (
+                    message.isUser ? (
+                      <UserBubble key={index}>
+                        <h1>{message.text}</h1>
+                      </UserBubble>
+                    ) : (
+                      <BotBubble key={index}>
+                        <h1>{message.text}</h1>
+                      </BotBubble>
+                    )
+                  ))}
                 </ChatBubble>
               </ChatBubbleContainer>
               ) : (
@@ -223,7 +235,7 @@ const ChatbotApp = () => {
               )
         }
         <InputContainer isAsked={sharedStatus}  >
-            <InputChatbot  sharedStatus={sharedStatus} changeSharedStatus={setSharedStatus} setAnswer={setAnswer} />
+            <InputChatbot  sharedStatus={sharedStatus} changeSharedStatus={setSharedStatus} setAnswer={setAnswer} setUserMsg={setUserMessage} setBotMsg={setBotMessage}/>
         </InputContainer>
 
     <MadeBy>
@@ -242,4 +254,4 @@ const ChatbotApp = () => {
   )
 }
 
-export default ChatbotApp
+export default ChatbotAppV2

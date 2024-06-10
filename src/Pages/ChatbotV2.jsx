@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ChatbotAppV2 from '../Containers/ChatbotApp'
+import ChatbotAppV2 from '../Containers/ChatbotAppV2'
 import MovingBackground from '../Components/MovingBackground'
 
 const ChatbotV2 = () => {

@@ -32,7 +32,7 @@ const StyledTextarea = styled.textarea`
   padding-top: 15px;
 `;
 
-const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer}) => {
+const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer, setUserMsg, setBotMsg}) => {
   const [withText, setWithText] = useState(false)
 
   const [userPrompt, setUserPrompt] = useState('');
@@ -44,7 +44,6 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer}) => {
 
 
   const handleButtonClick = async () => {
-    console.log("El botón ha sido clicado desde el hijo");
 
     if (!userPrompt){
       alert("Introduce alguna duda o consulta")
@@ -53,11 +52,10 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer}) => {
       
       setFinalOutput(userPrompt)
 
-      if (sharedStatus){
-        window.location.reload();
+      if (sharedStatus === false){
+        changeSharedStatus(!sharedStatus);
       }
       
-      changeSharedStatus(!sharedStatus);
     }
 
   };
@@ -83,9 +81,12 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer}) => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Exisoto")
-          console.log(data)
+
+
           setAnswer(data.saulai_output);
+          setUserMsg(prevMessages => [...prevMessages, finalOutput])
+          setBotMsg(prevMessages => [...prevMessages, data.saulai_output])
+
         } else {
           console.error('Error al obtener la respuesta de la API');
         }
@@ -101,12 +102,7 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer}) => {
   }, [finalOutput]);
 
   return (
-    sharedStatus ? (
-      <InputWrapper isAsked = {sharedStatus}>
-        <PrimaryButton text="Otra pregunta" onClick={handleButtonClick} />
-      </InputWrapper>
-    ) : (
-      <InputWrapper>
+    <InputWrapper>
       <StyledTextarea
         placeholder="¿Qué dudas tienes?"
         value={userPrompt}
@@ -115,7 +111,7 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer}) => {
       />
       <PrimaryButton text="Ask Me" onClick={handleButtonClick} />
     </InputWrapper>
-    )
+
   );
 };
 
