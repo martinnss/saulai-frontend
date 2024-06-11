@@ -27,10 +27,9 @@ const MainContainer = styled.div`
   text-align: center;
   transition: all 0.5s ease;
   align-items: center;
-  justify-content: center;
-
+  margin-top: 2rem;
   & > span {
-    margin-top: ${(props) => (props.isAsked ? '3%' : '0%')};
+    margin-top: ${(props) => (props.isAsked ? '0%' : '0%')};
     transition: all 0.5s ease;
   }
 
@@ -66,6 +65,7 @@ const InputContainer = styled.div`
 
 const ChatBubble = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center; 
   align-items: 'center'; 
   background-color: #f0f0ff5a;
@@ -73,7 +73,7 @@ const ChatBubble = styled.div`
   border-radius: 8px;
   border: 1px solid #b0b0b036;
   width: 50rem;
-  height: 40vh;
+  height: 95%;
   margin-bottom: 10px;
   padding: 1rem;
   overflow: auto;
@@ -93,7 +93,7 @@ const ChatBubble = styled.div`
   
   &.overflow {
     align-items: flex-start;
-    & > h1 {
+    & > p {
       position: static;
       transform: none;
     }
@@ -105,7 +105,7 @@ const ChatBubble = styled.div`
   @media only screen and (max-width: 820px) {
 
     font-size: 1rem;
-    height: 46vh;
+
 
   }
 `;
@@ -115,12 +115,12 @@ const ChatBubble = styled.div`
 
 const ChatBubbleContainer = styled.div`
   display:flex;
-  width:50rem;
+  
   
   align-items: center;
   justify-content: center;
   width: 100%;
-
+  height: 70vh;
   margin-top: 1rem;
   
   @media only screen and (max-width: 820px) {
@@ -133,7 +133,7 @@ const UserBubble = styled.div`
   padding: 10px;
   margin: 5px 0;
   border-radius: 10px;
-  background-color: #DCF8C6;
+  background-color: #c1c2c181;
   align-self: flex-end;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 `;
@@ -143,7 +143,7 @@ const BotBubble = styled.div`
   padding: 10px;
   margin: 5px 0;
   border-radius: 10px;
-  background-color: #FFF;
+  background-color: #ffffff81;
   align-self: flex-start;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 `;
@@ -164,30 +164,29 @@ const ChatbotAppV2 = () => {
   const [answer, setAnswer]  = useState(null);
   const [userMessage, setUserMessage] = useState([])
   const [botMessage, setBotMessage] = useState([])
+  const [allMessages, setAllMessages] = useState([]);
 
   const [sharedStatus, setSharedStatus] = useState(false);
 
   const chatBubbleRef = useRef(null);
   const isOverflowing = useOverflow(chatBubbleRef, answer);
 
-  const allMessages = [];
+
 
   useEffect(() => {
     const maxLength = Math.max(userMessage.length, botMessage.length);
+    const messages = [];
 
     for (let i = 0; i < maxLength; i++) {
       if (i < userMessage.length) {
-        allMessages.push({ text: userMessage[i], isUser: true });
+        messages.push({ text: userMessage[i], isUser: true });
       }
       if (i < botMessage.length) {
-        allMessages.push({ text: botMessage[i], isUser: false });
+        messages.push({ text: botMessage[i], isUser: false });
       }
     }
-  
-    console.log(userMessage);
-    console.log(botMessage)
-    console.log('......................')
-    console.group(allMessages)
+    setAllMessages(messages);
+
   }, [botMessage]);
 
   
@@ -200,7 +199,7 @@ const ChatbotAppV2 = () => {
               { ////////  //////////// span padre no debe cambiar
               sharedStatus? 
                 (<p style={{ fontSize: '1rem'}} >
-                  Respuestas legales al estilo Goodman💼
+                  
                 </p>):
                 (
                   <div>
@@ -218,16 +217,17 @@ const ChatbotAppV2 = () => {
               <ChatBubbleContainer className='chat-bubble-container'  >
                 <ChatBubble  ref={chatBubbleRef} className={isOverflowing ? 'overflow' : 'no-overflow'}  >
                 {allMessages.map((message, index) => (
-                    message.isUser ? (
-                      <UserBubble key={index}>
-                        <h1>{message.text}</h1>
-                      </UserBubble>
-                    ) : (
-                      <BotBubble key={index}>
-                        <h1>{message.text}</h1>
-                      </BotBubble>
-                    )
-                  ))}
+                  
+                  message.isUser ? (
+                    <UserBubble key={index}>
+                      <p>{message.text}</p>
+                    </UserBubble>
+                  ) : (
+                    <BotBubble key={index}>
+                      <p>{message.text}</p>
+                    </BotBubble>
+                  )
+                ))}
                 </ChatBubble>
               </ChatBubbleContainer>
               ) : (
