@@ -37,6 +37,8 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer, setUserMsg, 
 
   const [userPrompt, setUserPrompt] = useState('');
   const [finalOutput, setFinalOutput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const handleInputChange = (e) => {
     setUserPrompt(e.target.value);
@@ -51,7 +53,7 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer, setUserMsg, 
     } else {
       
       setFinalOutput(userPrompt)
-
+      setUserPrompt("");
       if (sharedStatus === false){
         changeSharedStatus(!sharedStatus);
       }
@@ -61,7 +63,9 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer, setUserMsg, 
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && !event.shiftKey && !isLoading) {
+      event.preventDefault(); // Evita que se agregue una nueva línea
+      setUserPrompt("");
       handleButtonClick();
     }
   };
@@ -69,8 +73,8 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer, setUserMsg, 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
+        setIsLoading(true);
+                
         const response = await fetch('https://martinnss.pythonanywhere.com/chat_saulai', {
           method: 'POST',
           headers: {
@@ -84,7 +88,7 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer, setUserMsg, 
 
 
           setAnswer(data.saulai_output);
-          setUserMsg(prevMessages => [...prevMessages, finalOutput])
+          
           setBotMsg(prevMessages => [...prevMessages, data.saulai_output])
 
         } else {
@@ -92,11 +96,14 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer, setUserMsg, 
         }
       } catch (error) {
         console.error('Error de red:', error);
+      } finally {
+        setIsLoading(false); // Desactiva el estado de carga al finalizar la solicitud
       }
     };
 
     // Verifica si hay un prompt de usuario antes de hacer la llamada a la API
     if (finalOutput) {
+      setUserMsg(prevMessages => [...prevMessages, finalOutput])
       fetchData();
     }
   }, [finalOutput]);
@@ -109,7 +116,11 @@ const InputChatbot = ({ sharedStatus,changeSharedStatus, setAnswer, setUserMsg, 
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
-      <PrimaryButton text="Ask Me" onClick={handleButtonClick} />
+      {
+      !isLoading ? 
+      <PrimaryButton text="Ask Me" onClick={handleButtonClick} /> :
+      "..."}
+
     </InputWrapper>
 
   );

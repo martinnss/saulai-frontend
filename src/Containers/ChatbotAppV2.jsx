@@ -28,6 +28,8 @@ const MainContainer = styled.div`
   transition: all 0.5s ease;
   align-items: center;
   margin-top: 2rem;
+  padding: 0 10px;
+
   & > span {
     margin-top: ${(props) => (props.isAsked ? '0%' : '0%')};
     transition: all 0.5s ease;
@@ -67,7 +69,6 @@ const ChatBubble = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center; 
-  align-items: 'center'; 
   background-color: #f0f0ff5a;
   backdrop-filter: blur(10px);
   border-radius: 8px;
@@ -166,28 +167,55 @@ const ChatbotAppV2 = () => {
   const [botMessage, setBotMessage] = useState([])
   const [allMessages, setAllMessages] = useState([]);
 
+  const [userMessages, setUserMessages] = useState([]);
+  const [botMessages, setBotMessages] = useState([]);
+
   const [sharedStatus, setSharedStatus] = useState(false);
 
   const chatBubbleRef = useRef(null);
   const isOverflowing = useOverflow(chatBubbleRef, answer);
 
 
+  //separar dosuse effects uno para bot 
+
+  
 
   useEffect(() => {
-    const maxLength = Math.max(userMessage.length, botMessage.length);
-    const messages = [];
+    if (userMessage.length > 0) {
+      const newUserMessages = userMessage.map(msg => ({
+        text: msg,
+        isUser: true,
+        timestamp: new Date().getTime()  // or use a unique ID
+      }));
+      console.log('new:user',newUserMessages)
+      console.log('new:user_toadd',newUserMessages[newUserMessages.length - 1])
+      setUserMessages(prevMessages => [...prevMessages, newUserMessages[newUserMessages.length - 1]]);
+      setAllMessages(prevMessages => [...prevMessages, newUserMessages[newUserMessages.length - 1]]);
 
-    for (let i = 0; i < maxLength; i++) {
-      if (i < userMessage.length) {
-        messages.push({ text: userMessage[i], isUser: true });
-      }
-      if (i < botMessage.length) {
-        messages.push({ text: botMessage[i], isUser: false });
-      }
     }
-    setAllMessages(messages);
-
+    
+  }, [userMessage]);
+  
+  useEffect(() => {
+    if (botMessage.length > 0) {
+      const newBotMessages = botMessage.map(msg => ({
+        text: msg,
+        isUser: false,
+        timestamp: new Date().getTime()  // or use a unique ID
+      }));
+      console.log('new:bot',newBotMessages)
+      setBotMessages(prevMessages => [...prevMessages, newBotMessages[newBotMessages.length - 1]]);
+      setAllMessages(prevMessages => [...prevMessages, newBotMessages[newBotMessages.length - 1]]);
+    }
+    
   }, [botMessage]);
+
+
+  useEffect(() => {
+    console.log(allMessages)
+    
+  }, [allMessages]);
+
 
   
   return (
@@ -238,7 +266,7 @@ const ChatbotAppV2 = () => {
             <InputChatbot  sharedStatus={sharedStatus} changeSharedStatus={setSharedStatus} setAnswer={setAnswer} setUserMsg={setUserMessage} setBotMsg={setBotMessage}/>
         </InputContainer>
 
-    <MadeBy>
+    <MadeBy className='footer-saul'>
       <p>Made by Martín Olivares💡</p>
       <a href="https://www.linkedin.com/in/martin-olivares-tapia/" target="_blank" rel="noopener noreferrer"  className='linkedin-logo'>
        <svg  xmlns="http://www.w3.org/2000/svg" height="24" width="21" viewBox="0 0 448 512"><path fill="#020061" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
