@@ -68,13 +68,13 @@ const InputContainer = styled.div`
 const ChatBubble = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: flex-start; 
   background-color: #f0f0ff5a;
   backdrop-filter: blur(10px);
   border-radius: 8px;
   border: 1px solid #b0b0b036;
   width: 50rem;
-  height: 95%;
+  height: 100%;
   margin-bottom: 10px;
   padding: 1rem;
   overflow: auto;
@@ -121,7 +121,7 @@ const ChatBubbleContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 70vh;
+  height: 60vh;
   margin-top: 1rem;
   
   @media only screen and (max-width: 820px) {
